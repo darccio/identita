@@ -2,17 +2,16 @@ package identita
 
 import (
 	"github.com/imdario/identita/base40"
-	"github.com/imdario/identita/crypto"
 	"io/ioutil"
 	"math/big"
 )
 
 func IssueFromFile(keyfile, file, password string) (id []byte, err error) {
-	key, err := crypto.ReadKey(keyfile)
+	key, err := ReadKey(keyfile)
 	if err != nil {
 		return
 	}
-	pubKey, err := crypto.ReadPublicKey(keyfile)
+	pubKey, err := ReadPublicKey(keyfile)
 	if err != nil {
 		return
 	}
@@ -28,11 +27,11 @@ func Issue(key, pubKey []byte, password string, data []byte) (id []byte, err err
 	 * 1 - Serialize to Identita Binary Format
 	 */
 	salt := []byte{} // Use National Identification Number
-	ciphertext, err := crypto.Encrypt([]byte(password), pubKey, salt, data)
+	ciphertext, err := Encrypt([]byte(password), pubKey, salt, data)
 	if err != nil {
 		return
 	}
-	signature, err := crypto.Sign(key, ciphertext)
+	signature, err := Sign(key, ciphertext)
 	if err != nil {
 		return
 	}

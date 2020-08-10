@@ -1,9 +1,9 @@
-package crypto
+package identita
 
 import (
 	"crypto/rand"
 	"encoding/ascii85"
-	"github.com/agl/ed25519"
+	"golang.org/x/crypto/ed25519"
 	"io/ioutil"
 	"strings"
 )

@@ -1,9 +1,9 @@
-package crypto
+package identita
 
 import (
 	"encoding/ascii85"
 	"errors"
-	"github.com/agl/ed25519"
+	"golang.org/x/crypto/ed25519"
 	"io/ioutil"
 )
 
@@ -45,9 +45,9 @@ func SignFile(keyfile, file string) (err error) {
 }
 
 func Sign(key, message []byte) (signature []byte, err error) {
-	var vKey [ed25519.PrivateKeySize]byte
+	var vKey ed25519.PrivateKey
 	copy(vKey[:], key)
-	vSignature := ed25519.Sign(&vKey, message)
+	vSignature := ed25519.Sign(vKey, message)
 	signature = vSignature[:]
 	return
 }
@@ -70,12 +70,12 @@ func VerifyFile(keyfile, file string) (err error) {
 
 func Verify(key, message, signature []byte) (err error) {
 	var (
-		vKey       [ed25519.PublicKeySize]byte
-		vSignature [ed25519.SignatureSize]byte
+		vKey       ed25519.PublicKey
+		vSignature = make([]byte, ed25519.SignatureSize)
 	)
 	copy(vKey[:], key)
 	copy(vSignature[:], signature)
-	if !ed25519.Verify(&vKey, message, &vSignature) {
+	if !ed25519.Verify(vKey, message, vSignature) {
 		err = errors.New("Signature not valid")
 	}
 	return

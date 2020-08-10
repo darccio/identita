@@ -1,7 +1,7 @@
-package crypto
+package identita
 
 import (
-	"code.google.com/p/go.crypto/scrypt"
+	"golang.org/x/crypto/scrypt"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
@@ -29,7 +29,7 @@ func Encrypt(password, pubKey, salt, data []byte) (ciphertext []byte, err error)
 		return
 	}
 	ivSize := keySize / 4
-	ciphertext = make([]byte, ivSize + len(data))
+	ciphertext = make([]byte, ivSize+len(data))
 	iv := ciphertext[:ivSize]
 	if err = getRandomBytes(iv); err != nil {
 		return

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/imdario/identita"
-	"github.com/imdario/identita/crypto"
 	"github.com/spf13/cobra"
 )
 
@@ -48,7 +47,7 @@ var (
 )
 
 func genkey(cmd *cobra.Command, args []string) {
-	if err := crypto.GenerateKey(out); err != nil {
+	if err := identita.GenerateKey(out); err != nil {
 		panic(err)
 	}
 }
@@ -56,7 +55,7 @@ func genkey(cmd *cobra.Command, args []string) {
 func sign(cmd *cobra.Command, args []string) {
 	for _, in := range args {
 		fmt.Printf("%s: ", in)
-		if err := crypto.SignFile(key, in); err != nil {
+		if err := identita.SignFile(key, in); err != nil {
 			fmt.Println(err)
 		} else {
 			fmt.Println("done")
@@ -67,7 +66,7 @@ func sign(cmd *cobra.Command, args []string) {
 func verify(cmd *cobra.Command, args []string) {
 	for _, in := range args {
 		fmt.Printf("%s: ", in)
-		if err := crypto.VerifyFile(key, in); err != nil {
+		if err := identita.VerifyFile(key, in); err != nil {
 			fmt.Println(err)
 		} else {
 			fmt.Println("ok")
